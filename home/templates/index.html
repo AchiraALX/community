@@ -1,12 +1,229 @@
+<!-- load static -->
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <!-- bootsrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- fontawesome -->
+    <script src="https://kit.fontawesome.com/8c8f8b8b8a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <!-- w3schools -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- picsum -->
+    <script src="https://picsum.photos/200/300"></script>
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Amita&effect=3d' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Chathura' rel='stylesheet'>
+
+    <link rel="stylesheet" href="{% static 'main5.css' %}">
     <title>Community..</title>
 </head>
-<body>
-    <h1>My name is Jacob and I worked successfully. You can go ahead to the next step.</h1>
-</body>
+<header>
+<!-- Top navigation -->
+    <div class="topnav" id="myTopnav">
+
+        <!-- Centered link --
+        <div class="topnav-centered">
+        <a href="#home" class="active">Home</a>
+        </div>
+        
+        <!-- Left-aligned links (default) -->
+        <a href="#news">The Community</a>
+        
+        <!-- Right-aligned links -->
+        <div class="topnav-right">
+        <a href="#search" id="contact_btn">Contact</a>
+        <script>
+            /* scroll to #contact_information element */
+            var contact = document.getElementById("contact_btn");
+            contact.addEventListener("click", () => {
+                var top = document.getElementById("contact_information").offsetTop;
+                window.scrollTo({
+                    top: top,
+                    left: 0,
+                    behavior: "smooth",
+                })
+            })
+        </script>
+        <a href="http://awardjacob.me/about/" target="_blank">About</a>
+        </div>
+        
+    </div>
+    <script>
+        /* change topnav background to aliceblue when the pageYoffset is greater than 200px */
+        window.onscroll = function() {myFunction()};
+        function myFunction() {
+            var bar = document.getElementById("myTopnav");
+            const arrow1 = document.getElementById("runToTop");
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                bar.style.backgroundColor = "aliceblue";
+                bar.style.boxShadow = "0 0 10px rgba(0,0,0,0.5)";
+
+            } else {
+               bar.style.backgroundColor = "rgba(240, 248, 255, 0.502)";
+            }
+        }
+    </script>
+    <div class="jumbotron text-center" id="jumbotron">
+        <div id="jumbotron_text">
+            <h1>Community</h1>
+            <p>Community is a place where you can share your thoughts and ideas with others.</p>
+        </div>
+    </div>
+</header>
+<main>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <br><br>
+                    <p style="letter-spacing: 2px; word-spacing: 3px;">
+                        This community is for people to express thoughts about my fund sourcing for my Higher Education 
+                        (Software Engineering at the African Leadership University).
+                        I you haven't read about the campaign, don't forget to
+                    </p>
+                    <br>    
+                    <p style="text-align: center; width: 100%;">
+                        <a href="http://awardjacob.me" target="_blank"><button id="click">Click</button></a>
+                    </p>
+                    <script>
+                        const click = document.getElementById("click")
+                        click.addEventListener("click", () => {
+                            var q = confirm("Are you sure to leave this page?")
+                        })
+                    </script>
+                </div>
+            </div>
+
+            <div id="form_container">
+                <h4 style="text-align: center;"><code><i>Leave your thought...</i></code></h4>
+                <form action="addrecord" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="comment">Comment</label>
+                        <textarea class="form-control" id="comment" name="content" rows="3" required></textarea>
+                    </div>
+                    <div style="text-align: center;">
+                        <button type="submit" class="btn btn-primary" style="width: 300px;">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <br> <br> <br>
+            <div>
+                <h3>
+                    Thoughts...
+                </h3>
+            </div>
+
+            <div>
+                {% for post in posts %}
+                <br>
+                <div class="row margin">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body" style="color: #154;" id="post_container">
+                                <h4 class="card-title" style="font-weight: 800;">{{ post.name }}</h4>
+                                <span style="position: absolute; right: 5px; transform: translateY(-150%);">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    {{ post.time }}
+                                </span>
+                                <hr>
+                                <p class="card-text">{{ post.content }}</p>
+                                <hr>
+                                <a href="#" class="btn btn-primary">Read More</a>
+                                <div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <br> <br>
+        <!-- contact card -->
+        <h3 id="contact_title" class="font-effect-3d">
+            Contact Information
+        </h3>
+        <hr>
+        <div id="contact_information">
+            <!-- email -->
+            <p>
+                Don't forget to get in touch.....
+            </p>
+            <div id="contact_card">
+                <!-- contact card -->
+
+            </div>
+        </div>
+        
+
+        <br>
+        <br>
+
+    </body>
+</main>
+<footer>
+    <div id="footer">
+        <div style="position: relative;">
+            <a id="runToTop">
+               <!-- arrow up red background -->
+                <i class="uil uil-arrow-up" style="color: aliceblue; font-size: 30px; transform: translateY(-100%);"></i>
+            </a>
+            <script>
+                /* smooth scroll onclick */
+                const arrow = document.querySelector(".uil-arrow-up")
+                arrow.addEventListener("click", () => {
+                    window.scrollTo({
+                        top: 0,
+                        left: 0,
+                        behavior: "smooth"
+                    })
+                })
+            </script>
+        </div>
+        <div id="social">
+            <!-- whatsapp -->
+            <a href="https://wa.me/254748199786" target="_blank">
+                <i class="uil uil-whatsapp" style="color: aliceblue; font-size: 18px;"></i>
+            </a>
+            <!-- facebook -->
+            <a href="https://facebook.com/jacobsachitra" target="_blank">
+                <i class="uil uil-facebook-f" style="color: aliceblue; font-size: 18px;"></i>
+            </a>
+            <!-- github -->
+            <a href="https://github.com/AchiraALX" target="_blank">
+                <i class="uil uil-github-alt" style="color: aliceblue; font-size: 18px;"></i>
+            </a>
+
+        </div>
+    </div>
+    <div id="copyright">
+
+    </div>
+    <script>
+        var date = new Date();
+        var year = date.getFullYear();
+        document.getElementById("copyright").innerHTML = "© " + year + " Jacob | All rights Reserved";
+    </script>
+</footer>
 </html>
